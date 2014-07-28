@@ -13,16 +13,10 @@ module.exports = function (opt) {
     var data;
     var str = file.contents.toString('utf8');
 
-    if (opt) {
-      options = {
-        filename: file.path,
-        sourceFiles: [path.basename(file.path)],
-        generatedFile: path.basename(dest)
-      };
-    }
-
     try {
-      data = wrap(str);
+      var filename = file.path.split('/');
+      filename = filename[filename.length - 1].split('.')[0];
+      data = wrap(opt.namespace, filename, str);
     } catch (err) {
       return this.emit('error', new Error(err));
     }
